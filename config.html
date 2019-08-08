@@ -1,0 +1,159 @@
+<?php
+    global $OUTPUT;
+    // set to defaults if undefined
+    if (!isset($config->sharedsecret)) {
+        $config->sharedsecret = 'this is not a secure key, change it';
+    }
+
+    if (!isset($config->timeout)) {
+        $config->timeout = '5';
+    }
+
+    if (!isset($config->logoffurl)) {
+        $config->logoffurl = '';
+    }
+
+    if (!isset($config->autoopen)) {
+    	$config->autoopen = 'yes';
+    }
+
+    if (!isset($config->updateuser)) {
+    	$config->updateuser = 'yes';
+    }
+
+    if (!isset($config->redirectnoenrol)) {
+    	$config->redirectnoenrol = 'no';
+    }
+
+    if (!isset($config->firstname)) {
+        $config->firstname = 'no-first-name';
+    }
+
+    if (!isset($config->lastname)) {
+        $config->lastname = 'no-last-name';
+    }
+
+    if (!isset($config->idprefix)) {
+        $config->idprefix = '';
+    }
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr valign="top" class="required">
+    <td align="right"><label for="sharedsecret"><?php print_string("auth_wp2moodle_secretkey", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="sharedsecret" name="sharedsecret" type="text" size="30" value="<?php echo $config->sharedsecret?>" />
+        <?php
+
+        if (isset($err["sharedsecret"])) {
+            echo $OUTPUT->error_text($err["sharedsecret"]);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_secretkey_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="timeout"><?php print_string("auth_wp2moodle_timeout", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="timeout" name="timeout" type="text" size="3" maxlength="3" value="<?php echo $config->timeout?>" />
+        <?php
+
+        if (isset($err["timeout"])) {
+            echo $OUTPUT->error_text($err["timeout"]);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_timeout_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="">
+    <td align="right"><label for="logoffurl"><?php print_string("auth_wp2moodle_logoffurl", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="logoffurl" name="logoffurl" type="text" size="30" value="<?php echo $config->logoffurl?>" />
+        <?php
+
+        if (isset($err["logoffurl"])) {
+            echo $OUTPUT->error_text($err["logoffurl"]);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_logoffurl_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="">
+    <td align="right"><label for="logoffurl"><?php print_string("auth_wp2moodle_autoopen", "auth_wp2moodle") ?></label></td>
+    <td>
+    	<select id="autoopen" name="autoopen">
+    		<option value='yes'<?php if ($config->autoopen=='yes') { echo "selected-'selected'"; } ?>><?php echo get_string('yes') ?></option>
+    		<option value='no'<?php if ($config->autoopen!='yes') { echo "selected='selected'"; } ?>><?php echo get_string('no') ?></option>
+    	</select>
+    	<?php
+	        if (isset($err["autoopen"])) {
+	            echo $OUTPUT->error_text($err["autoopen"]);
+	        }
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_autoopen_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="">
+    <td align="right"><label for="updateuser"><?php print_string("auth_wp2moodle_updateuser", "auth_wp2moodle") ?></label></td>
+    <td>
+    	<select id="updateuser" name="updateuser">
+    		<option value='yes'<?php if ($config->updateuser=='yes') { echo "selected-'selected'"; } ?>><?php echo get_string('yes') ?></option>
+    		<option value='no'<?php if ($config->updateuser!='yes') { echo "selected='selected'"; } ?>><?php echo get_string('no') ?></option>
+    	</select>
+    	<?php
+	        if (isset($err["updateuser"])) {
+	            echo $OUTPUT->error_text($err["updateuser"]);
+	        }
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_updateuser_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="">
+    <td align="right"><label for="redirectnoenrol"><?php print_string("auth_wp2moodle_redirectnoenrol", "auth_wp2moodle") ?></label></td>
+    <td>
+    	<select id="redirectnoenrol" name="redirectnoenrol">
+    		<option value='yes'<?php if ($config->redirectnoenrol=='yes') { echo "selected-'selected'"; } ?>><?php echo get_string('yes') ?></option>
+    		<option value='no'<?php if ($config->redirectnoenrol!='yes') { echo "selected='selected'"; } ?>><?php echo get_string('no') ?></option>
+    	</select>
+    	<?php
+	        if (isset($err["redirectnoenrol"])) {
+	            echo $OUTPUT->error_text($err["redirectnoenrol"]);
+	        }
+        ?>
+    </td>
+    <td><?php print_string("auth_wp2moodle_redirectnoenrol_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="firstname"><?php print_string("auth_wp2moodle_firstname", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="firstname" name="firstname" type="text" size="30" value="<?php echo $config->firstname?>" />
+    </td>
+    <td><?php print_string("auth_wp2moodle_firstname_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="lastname"><?php print_string("auth_wp2moodle_lastname", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="lastname" name="lastname" type="text" size="30" value="<?php echo $config->lastname?>" />
+    </td>
+    <td><?php print_string("auth_wp2moodle_lastname_desc", "auth_wp2moodle") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="idprefix"><?php print_string("auth_wp2moodle_idprefix", "auth_wp2moodle") ?></label></td>
+    <td>
+        <input id="idprefix" name="idprefix" type="text" size="10" value="<?php echo $config->idprefix?>" />
+    </td>
+    <td><?php print_string("auth_wp2moodle_idprefix_desc", "auth_wp2moodle") ?></td>
+</tr>
+</table>

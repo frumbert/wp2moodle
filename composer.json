@@ -1,0 +1,18 @@
+{
+  "name": "frumbert/wp2moodle",
+  "description": "combination moodle and wordpress plugin for single sign on from wordpress to moodle",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "moodle",
+    "wordpress"
+  ],
+  "homepage": "http://wordpress.frumbert.org",
+  "license": "GPL2",
+  "support": {
+    "issues": "https://github.com/frumbert/wp2moodle"
+  },
+  "require": {
+    "composer/installers": "~1.0",
+    "php": ">=5.6"
+  }
+}
