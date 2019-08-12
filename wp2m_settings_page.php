@@ -15,7 +15,7 @@
 <?php } ?>
 
 <h2><?php print WP2M_PUGIN_NAME ." ". WP2M_CURRENT_VERSION ?></h2>
-<p>This plugin allows you to place a shortcode in a post that passes encrypted logon information to Moodle, using the <a href="https://github.com/frumbert/wp2moodle-moodle">Wp2Moodle authentication plugin</a> for Moodle 2.2+. The user will be created (if required) by Moodle and optionally enrolled in the specified Cohort(s), Course(s) and/or Group(s).</p>
+<p>This plugin allows you to place a shortcode in a post that passes encrypted logon information to Moodle (requires this plugin to be also installed into Moodle). The user will be added to Moodle and optionally enrolled in the specified Cohort(s), Course(s) and/or Group(s).</p>
 <p>Use the Moodle button on the rich editor to insert the shortcode, or enter the details manually using the examples below as a guide.</p>
 <p>Example: <code>[wp2moodle class='css-classname' group='group1' cohort='class1' target='_blank' authtext='Please log on']launch the course[/wp2moodle]</code>.</p>
 <table class="wp2m-table">
@@ -43,7 +43,7 @@
     </td></tr>
 </table>
 <?php } ?>
-<p>Upload this file as your digital download for the product. Then, after a purchase instead of a download, they will redirect to your Moodle site with an authentication token just like a shortcode link. Pretty neat, huh?</p>
+<p>Upload this file as your digital download for the product. Then, after a purchase instead of a download, they will redirect to your Moodle site with an authentication token just like a shortcode link.</p>
 
 <h2>Settings</h2>
 <form method="post" action="options.php">
@@ -62,15 +62,6 @@
             <th scope="row">Encryption secret<br><span style='font-weight:normal'>Must match Moodle</span></th>
             <td><input type="text" name="wp2m_shared_secret" value="<?php echo get_option('wp2m_shared_secret'); ?>" size="60" />
             <div class="description">Here is a freshly generated secure key: <code><?php echo base64_encode(openssl_random_pseudo_bytes(32)); ?></code>.</div>
-            </td>
-        </tr>
-
-        <tr valign="top">
-            <th scope="row">Update existing users</th>
-            <td>
-                <label><input type="radio" name="wp2m_update_details" value="true" <?php echo (get_option('wp2m_update_details') != "false") ? "checked" : "" ?> /> Yes </label>
-                <label><input type="radio" name="wp2m_update_details" value="false" <?php echo (get_option('wp2m_update_details') == "false") ? "checked" : "" ?> /> No </label>
-                <div class="description">Whether Moodle will update the profile fields in Moodle for existing users.</div>
             </td>
         </tr>
 

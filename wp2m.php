@@ -86,7 +86,6 @@ function wp2m_activate() {
 
 	add_option('wp2m_moodle_url', 'http://localhost/moodle');
 	add_option('wp2m_shared_secret', $shared_secret);
-	add_option('wp2m_update_details', 'true');
 }
 
 /**
@@ -95,7 +94,6 @@ function wp2m_activate() {
 function wp2m_deactivate() {
 	delete_option('wp2m_moodle_url');
 	delete_option('wp2m_shared_secret');
-	delete_option( 'wp2m_update_details' );
 }
 
 /**
@@ -104,7 +102,6 @@ function wp2m_deactivate() {
 function wp2m_uninstall() {
 	delete_option( 'wp2m_moodle_url' );
 	delete_option( 'wp2m_shared_secret' );
-	delete_option( 'wp2m_update_details' );
 }
 
 /**
@@ -128,7 +125,6 @@ function wp2m_register_settings() {
 	//register settings against a grouping (how wp-admin/options.php works)
 	register_setting( 'wp2m-settings-group', 'wp2m_moodle_url' );
 	register_setting( 'wp2m-settings-group', 'wp2m_shared_secret' );
-	register_setting( 'wp2m-settings-group', 'wp2m_update_details' );
 }
 
 /**
@@ -278,7 +274,6 @@ function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0) {
 		"cohort" => $cohort,								// string containing cohort to enrol this user into
 		"group" => $group,									// string containing group to enrol this user into
 		"course" => $course,								// string containing course id, optional
-		"updatable" => $update,								// if user profile fields can be updated in moodle
 		"activity" => $activity						// index of first [visible] activity to go to, if auto-open is enabled in moodle
 	);
 

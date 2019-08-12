@@ -25,7 +25,7 @@ require_once($CFG->dirroot."/lib/enrollib.php");
 
 $SESSION->wantsurl = $CFG->wwwroot.'/';
 
-$PASSTHROUGH_KEY = get_config('auth/wp2moodle', 'sharedsecret');
+$PASSTHROUGH_KEY = get_config('auth_wp2moodle', 'sharedsecret');
 if (!isset($PASSTHROUGH_KEY)) {
 	echo "Sorry, this plugin has not yet been configured. Please contact the Moodle administrator for details.";
 }
@@ -111,12 +111,12 @@ if (!empty($_GET)) {
 	$userdata = decrypt_string($rawdata, $PASSTHROUGH_KEY);
 
 	// time (in minutes) before incoming link is considered invalid
-	$timeout = (integer) get_config('auth/wp2moodle', 'timeout');
+	$timeout = (integer) get_config('auth_wp2moodle', 'timeout');
 	if ($timeout == 0) { $timeout = 5; }
 
-	$default_firstname = get_config('auth/wp2moodle', 'firstname') ?: "no-firstname"; // php 5.3 ternary
-	$default_lastname = get_config('auth/wp2moodle', 'lastname') ?: "no-lastname";
-	$idnumber_prefix = get_config('auth/wp2moodle', 'idprefix') ?: "";
+	$default_firstname = get_config('auth_wp2moodle', 'firstname') ?: "no-firstname"; // php 5.3 ternary
+	$default_lastname = get_config('auth_wp2moodle', 'lastname') ?: "no-lastname";
+	$idnumber_prefix = get_config('auth_wp2moodle', 'idprefix') ?: "";
 
 	// if userdata didn't decrypt, then timestamp will = 0, so following code will be bypassed anyway (e.g. bad data)
 	$timestamp = (integer) get_key_value($userdata, "stamp"); // remote site should have set this to new DateTime("now").getTimestamp(); which is a unix timestamp (utc)
@@ -137,7 +137,8 @@ if (!empty($_GET)) {
 		$course_idnumbers = get_key_value($userdata, "course");
 
 		$activity = (integer) get_key_value($userdata, "activity"); // activity number to start at, > 0
-		$updatefields = (get_key_value($userdata, "updatable") != "false"); // if true or not set, update fields like email, username, etc.
+		// $updatefields = (get_key_value($userdata, "updatable") != "false"); // if true or not set, update fields like email, username, etc.
+		$updatefields = (get_config('auth_wp2moodle', 'updateuser') === '1');
 
 		$courseId = 0; // cache
 
@@ -248,7 +249,7 @@ if (!empty($_GET)) {
 					}
 
 					// if the plugin auto-opens the course, then find the course this cohort enrols for and set it as the opener link
-					if (get_config('auth/wp2moodle', 'autoopen') == 'yes')  {
+					if (get_config('auth_wp2moodle', 'autoopen') === '1')  {
 						if ($enrolrow = $DB->get_record('enrol', array('enrol'=>'cohort','customint1'=>$cohortrow->id,'status'=>0))) {
 							$courseId = $enrolrow->courseid;
 						}
@@ -283,7 +284,7 @@ if (!empty($_GET)) {
 			foreach ($ids as $course) {
 				if ($DB->record_exists('course', array('idnumber'=>$course))) {
 					$courserow = $DB->get_record('course', array('idnumber'=>$course));
-					if (get_config('auth/wp2moodle', 'redirectnoenrol') !== 'yes') {
+					if (get_config('auth_wp2moodle', 'redirectnoenrol') === '1') {
 						if (!enrol_try_internal_enrol($courserow->id, $user->id, $studentrow->id)) {
 							continue;
 						}
@@ -294,7 +295,7 @@ if (!empty($_GET)) {
 		}
 
 		// if auto-open is enabled, work out where to start (e.g. course homepage or a particular activity)
-		if (get_config('auth/wp2moodle', 'autoopen') !== 'no')  {
+		if (get_config('auth_wp2moodle', 'autoopen') === '1')  {
 			if ($courseId > 0) {
 				$SESSION->wantsurl = new moodle_url('/course/view.php', array('id'=>$courseId));
 			}
@@ -325,8 +326,6 @@ if (!empty($_GET)) {
 		}
 	}
 }
-
-
 
 // redirect to the homepage
 redirect($SESSION->wantsurl);
