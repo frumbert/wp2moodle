@@ -222,7 +222,7 @@ function wp2m_download_url($url, $order, $download) {
 					$group = trim(str_replace(array('\'','"'), '', $pair[1]));
 					break;
 				case "cohort":
-					$group = trim(str_replace(array('\'','"'), '', $pair[1]));
+					$cohort = trim(str_replace(array('\'','"'), '', $pair[1]));
 					break;
 				case "course":
 					$course = trim(str_replace(array('\'','"'), '', $pair[1]));

@@ -112,7 +112,6 @@ if (!empty($_GET)) {
 
 	// time (in minutes) before incoming link is considered invalid
 	$timeout = (integer) get_config('auth_wp2moodle', 'timeout');
-	if ($timeout == 0) { $timeout = 5; }
 
 	$default_firstname = get_config('auth_wp2moodle', 'firstname') ?: "no-firstname"; // php 5.3 ternary
 	$default_lastname = get_config('auth_wp2moodle', 'lastname') ?: "no-lastname";
@@ -124,7 +123,7 @@ if (!empty($_GET)) {
 	$diff = floatval(date_diff(date_create("now"), $theirs)->format("%i")); // http://www.php.net/manual/en/dateinterval.format.php
 
 	// check the timestamp to make sure that the request is still within a few minutes of this servers time
-	if ($timestamp > 0 && $diff <= $timeout) { // less than N minutes passed since this link was created, so it's still ok
+	if ($timestamp > 0 && ($timeout == 0 || $diff <= $timeout)) { // less than N minutes passed since this link was created or timeout=0, so it's still ok
 
 		$username = trim(strtolower(get_key_value($userdata, "username"))); // php's tolower, not moodle's
 		$hashedpassword = get_key_value($userdata, "passwordhash");
