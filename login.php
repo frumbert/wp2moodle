@@ -138,6 +138,7 @@ if (!empty($_GET)) {
 		$activity = (integer) get_key_value($userdata, "activity"); // activity number to start at, > 0
 		// $updatefields = (get_key_value($userdata, "updatable") != "false"); // if true or not set, update fields like email, username, etc.
 		$updatefields = (get_config('auth_wp2moodle', 'updateuser') === '1');
+		$wantsurl = get_key_value($userdata, "url");
 
 		$courseId = 0; // cache
 
@@ -314,6 +315,11 @@ if (!empty($_GET)) {
 					}
 				}
 			}
+		}
+
+		// if url is set, override anything we have previously calculated
+		if (!empty($wantsurl)) {
+			$SESSION->wantsurl = new moodle_url(rawurldecode($wantsurl));
 		}
 
 		// all that's left to do is to authenticate this user and set up their active session

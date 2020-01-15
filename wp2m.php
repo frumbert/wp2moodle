@@ -175,7 +175,8 @@ function wp2moodle_handler( $atts, $content = null ) {
 		"class" => 'wp2moodle',
 		"target" => '_self',
 		"authtext" => '',
-		"activity" => 0
+		"activity" => 0,
+		"url" => '',
 	), $atts));
 
 	if ($content == null || !is_user_logged_in() ) {
@@ -186,7 +187,7 @@ function wp2moodle_handler( $atts, $content = null ) {
 		}
 	} else {
 		// url = moodle_url + "?data=" + <encrypted-value>
-		$url = '<a target="'.esc_attr($target).'" class="'.esc_attr($class).'" href="'.wp2moodle_generate_hyperlink($cohort,$group,$course,$activity).'">'.do_shortcode($content).'</a>'; // hyperlinked content
+		$url = '<a target="'.esc_attr($target).'" class="'.esc_attr($class).'" href="'.wp2moodle_generate_hyperlink($cohort,$group,$course,$activity,$url).'">'.do_shortcode($content).'</a>'; // hyperlinked content
 	}
 	return $url;
 }
@@ -254,7 +255,7 @@ function remove_unwanted_mp_meta_boxes() {
 /*
  * Function to build the encrypted hyperlink
  */
-function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0) {
+function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0, $url = null) {
 
 	// needs authentication; ensure userinfo globals are populated
 	global $current_user;
@@ -274,7 +275,8 @@ function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0) {
 		"cohort" => $cohort,								// string containing cohort to enrol this user into
 		"group" => $group,									// string containing group to enrol this user into
 		"course" => $course,								// string containing course id, optional
-		"activity" => $activity						// index of first [visible] activity to go to, if auto-open is enabled in moodle
+		"activity" => $activity,							// index of first [visible] activity to go to, if auto-open is enabled in moodle
+		"url" => rawurlencode($url)							// url to open after logon
 	);
 
 	// encode array as querystring
