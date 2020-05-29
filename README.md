@@ -3,7 +3,7 @@ wp2moodle
 
 WordPress to Moodle (wp2moodle) is a plugin that allows users in WordPress to open Moodle courses without getting an icky logon box in between. It will also (optionally) enrol the user into cohorts or courses.
 
-It uses an encrypted link and doesn’t rely on SSL (though it’s recommended you use SSL where possible). Your WordPress and Moodle servers might be on the same host, or can be on different networks or server technologies. Since it only uses hyperlinks to communicate, there’s no special setup.
+It uses an encrypted link and **doesn’t rely on SSL / https** (though it’s recommended you use SSL where possible). Your WordPress and Moodle servers might be on the same host, or can be on different networks or server technologies. Since it only uses hyperlinks to communicate, there’s no special setup.
 
 The plugin has these limitations by design:
 
@@ -23,7 +23,7 @@ openssl extension on your php (you probably have this)
 
 Demo
 -----
-http://wordpress.frumbert.org/
+~~http://wordpress.frumbert.org/~~ sorry broken at the moment
 
 How to install this plugin
 ---------------------
