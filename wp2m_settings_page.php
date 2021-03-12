@@ -28,6 +28,7 @@
     <tr><td><code>target</code></td><td> optional, defaults to '_self'; href target attribute of link</td><td><code>target="_blank"</code></td></tr>
     <tr><td><code>authtext</code></td><td> optional, defaults to content between shortcode tags; string to display if not yet logged on</td></tr>
     <tr><td><code>activity</code></td><td> optional, numerical index of the first activity to open (> 0) if auto-open is enabled in the Moodle plugin</td></tr>
+    <tr><td><code>cmid</code></td><td>optional, numerical id of the activity view page (e.g. /mod/plugin/view.php?id=XXX)</td></tr>
     <tr><td><code>url</code></td><td> optional, overrides other lookups, relative moodle url to open after logon (e.g. /mod/page/index.php?id=123)</td></tr>
     </tbody>
 </table>

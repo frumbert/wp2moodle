@@ -168,6 +168,8 @@ function wp2moodle_handler( $atts, $content = null ) {
 	// $course => text id of the course, if you just want to enrol a user directly to a course
 	// $authtext => string containing text content to display when not logged on (defaults to content between tags when empty / missing)
 	// $activity => index of the first activity to open, if autoopen is enabled in moodle
+	// $cmid => id of the coursemodule (/mod/pluginname/view.php?id=XXX) to open after authentication
+	// $url => the url to open after login
 	extract(shortcode_atts(array(
 		"cohort" => '',
 		"group" => '',
@@ -176,6 +178,7 @@ function wp2moodle_handler( $atts, $content = null ) {
 		"target" => '_self',
 		"authtext" => '',
 		"activity" => 0,
+		"cmid" => 0,
 		"url" => '',
 	), $atts));
 
@@ -187,7 +190,7 @@ function wp2moodle_handler( $atts, $content = null ) {
 		}
 	} else {
 		// url = moodle_url + "?data=" + <encrypted-value>
-		$url = '<a target="'.esc_attr($target).'" class="'.esc_attr($class).'" href="'.wp2moodle_generate_hyperlink($cohort,$group,$course,$activity,$url).'">'.do_shortcode($content).'</a>'; // hyperlinked content
+		$url = '<a target="'.esc_attr($target).'" class="'.esc_attr($class).'" href="'.wp2moodle_generate_hyperlink($cohort,$group,$course,$activity,$url,$cmid).'">'.do_shortcode($content).'</a>'; // hyperlinked content
 	}
 	return $url;
 }
@@ -215,6 +218,9 @@ function wp2m_download_url($url, $order, $download) {
 		$path = $_SERVER['DOCUMENT_ROOT'] . parse_url($url)["path"];
 		$cohort = "";
 		$group = "";
+		$urllog = "";
+		$activity = 0;
+		$cmid = 0;
 		$data = file($path); // now it's an array!
 		foreach ($data as $row) {
 			$pair = explode("=",$row);
@@ -231,9 +237,15 @@ function wp2m_download_url($url, $order, $download) {
 				case "activity":
 					$activity = trim(str_replace(array('\'','"'), '', $pair[1]));
 					break;
+				case "cmid":
+					$cmid = trim(str_replace(array('\'','"'), '', $pair[1]));
+					break;
+				case "url":
+					$urllog = trim(str_replace(array('\'','"'), '', $pair[1]));
+					break;
 			}
 		}
-		$url = wp2moodle_generate_hyperlink($cohort,$group,$course,$activity);
+		$url = wp2moodle_generate_hyperlink($cohort,$group,$course,$activity,$urllog,$cmid);
 		if (ob_get_contents()) { ob_clean(); }
 		header('Location: ' . $url, true, 301); // redirect to this url
 		exit();
@@ -255,7 +267,7 @@ function remove_unwanted_mp_meta_boxes() {
 /*
  * Function to build the encrypted hyperlink
  */
-function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0, $url = null) {
+function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0, $url = null, $cmid = 0) {
 
 	// needs authentication; ensure userinfo globals are populated
 	global $current_user;
@@ -276,6 +288,7 @@ function wp2moodle_generate_hyperlink($cohort,$group,$course,$activity = 0, $url
 		"group" => $group,									// string containing group to enrol this user into
 		"course" => $course,								// string containing course id, optional
 		"activity" => $activity,							// index of first [visible] activity to go to, if auto-open is enabled in moodle
+		"cmid" => $cmid,									// coursemodule id
 		"url" => rawurlencode($url)							// url to open after logon
 	);
 
