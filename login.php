@@ -135,7 +135,12 @@ if (!empty($_GET)) {
 		$group_idnumbers = get_key_value($userdata, "group");
 		$course_idnumbers = get_key_value($userdata, "course");
 
+		// specifify either the activity order (topmost being 1, counting down the page);
+		// or specify the activity id number - the XXX in moodle when your url is /mod/activitymame/view.php?id=XXX
+		// specify one, not both.
 		$activity = (integer) get_key_value($userdata, "activity"); // activity number to start at, > 0
+		$cmid = (integer) get_key_value($userdata, "cmid"); // activity cmid
+
 		// $updatefields = (get_key_value($userdata, "updatable") != "false"); // if true or not set, update fields like email, username, etc.
 		$updatefields = (get_config('auth_wp2moodle', 'updateuser') === '1');
 		$wantsurl = get_key_value($userdata, "url");
@@ -280,11 +285,12 @@ if (!empty($_GET)) {
 			// find in table roles, record with shortname = student
 			$studentrow = $DB->get_record('role', array('shortname'=>'student'));
 			$ids = explode(',', $course_idnumbers);
+			$redirectnoenrol = get_config('auth_wp2moodle', 'redirectnoenrol');
 
 			foreach ($ids as $course) {
 				if ($DB->record_exists('course', array('idnumber'=>$course))) {
 					$courserow = $DB->get_record('course', array('idnumber'=>$course));
-					if (get_config('auth_wp2moodle', 'redirectnoenrol') === '1') {
+					if ($redirectnoenrol === '0') { // 0 = try enrol; 1 = skip enrol
 						if (!enrol_try_internal_enrol($courserow->id, $user->id, $studentrow->id)) {
 							continue;
 						}
@@ -299,16 +305,17 @@ if (!empty($_GET)) {
 			if ($courseId > 0) {
 				$SESSION->wantsurl = new moodle_url('/course/view.php', array('id'=>$courseId));
 			}
-			// if an activity is specified, then work out its url.
-			if ($activity > 0) {
+			// if an activity is specified, or a cmid has been specified, then work out its url.
+			if ($activity > 0 || $cmid > 0) {
 				$course = get_course($courseId);
 				$modinfo = get_fast_modinfo($course);
 				$index = 0;
-				foreach ($modinfo->get_cms() as $cmid => $cm) {
+				foreach ($modinfo->get_cms() as $cmindex => $cm) {
 					if ($cm->uservisible && $cm->available) {
-						if ($index === $activity) {
+						// TODO fix this loop to account for contextual permissions to cm objects .. one day
+						if (($index === $activity && $cmid === 0) || ($activity === 0 && $cmid === $cmindex)) {
 							// echo PHP_EOL . $index, ".", $cmid, " name=", $cm->modname, ", name=" . $cm->name;//. "=>" . $cm;
-							$SESSION->wantsurl = new moodle_url("/mod/" . $cm->modname . "/view.php", array("id" => $cmid));
+							$SESSION->wantsurl = new moodle_url("/mod/" . $cm->modname . "/view.php", array("id" => $cmindex));
 							break;
 						}
 						$index += 1;
@@ -332,7 +339,7 @@ if (!empty($_GET)) {
 	}
 }
 
-// redirect to the homepage
+// redirect to the opening page
 redirect($SESSION->wantsurl);
 ?>
 
