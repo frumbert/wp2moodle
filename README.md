@@ -17,13 +17,10 @@ Data is encrypted (using aes-256-cbc via openssl) at the Wordpress end and hande
 
 Requirements
 ------------
-Moodle 3.1 or above (Reccomended: 3.6.4 or higher)
-Wordpress 4 or above (Reccomended: 5.2.2 or higher)
+PHP 5.6+ (Reccomended: 7.3 or higher)
+Moodle 3.1 or above (Reccomended: 3.6.4 or higher, last checked in 3.10.1+)
+Wordpress 4 or above (Reccomended: 5.2.2 or higher, last checked in 5.7)
 openssl extension on your php (you probably have this)
-
-Demo
------
-~~http://wordpress.frumbert.org/~~ sorry broken at the moment
 
 How to install this plugin
 ---------------------
