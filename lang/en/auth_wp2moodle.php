@@ -36,13 +36,13 @@ $string['settings_logoffurl'] = 'Logoff Url';
 $string['settings_logoffurl_desc'] = 'Url to redirect to if the user presses Logoff (optional)';
 
 $string['settings_autoopen'] = 'Auto open course';
-$string['settings_autoopen_desc'] = 'Automatically open the course after successful auth (uses first match in cohort or group)';
+$string['settings_autoopen_desc'] = 'Automatically open the course after successful authentication';
 
 $string['settings_updateuser'] = 'Update user profile fields using Wordpress values?';
-$string['settings_updateuser_desc'] = 'If set, user profile fields such as first and last name will be overwritten each time the SSO occurs. Turn this off if you want to let the user manage their profile fields independantly.';
+$string['settings_updateuser_desc'] = 'When YES, user profile fields (firstname, lastname, email, idnumber) are updated to use the supplied values. Turn this off if you want to let the user manage their profile fields independantly.';
 
 $string['settings_redirectnoenrol'] = 'Only redirect user to course?';
-$string['settings_redirectnoenrol_desc'] = 'If set, the user is being redirected to the course. Otherwise the user is enrolled into the course, if that has not been done already.';
+$string['settings_redirectnoenrol_desc'] = 'When YES, course enrolment is bypassed. The user will still be redirected to the course homepage (if not otherwise overridden).';
 
 $string['settings_firstname'] = 'First name (if empty)';
 $string['settings_firstname_desc'] = 'If no first name is specified by Wordpress, use this value';
@@ -50,5 +50,11 @@ $string['settings_firstname_desc'] = 'If no first name is specified by Wordpress
 $string['settings_lastname'] = 'Last name (if empty)';
 $string['settings_lastname_desc'] = 'If no last name is specified by Wordpress, use this value';
 
+$string['settings_matchfield'] = 'Field used to match';
+$string['settings_matchfield_desc'] = 'When creating or matching users, use this database field to match records (default: idnumber)';
+
 $string['settings_idprefix'] = 'Prefix for user idnumber';
-$string['settings_idprefix_desc'] = 'Optional string value to store ahead of the idnumber to avoid clashes (default: wp2m). Warning: changing this after user have enrolled may disassociate their existing user records; apply with caution.';
+$string['settings_idprefix_desc'] = 'Optional string value to store in front of of the idnumber to avoid clashes (default: wp2m).';
+
+$string['notloggedindebug'] = 'The login attempt failed. Reason: {$a}';
+$string['loginerror_invaliddomain'] = 'The email address is not allowed at this site.';
