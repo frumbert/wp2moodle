@@ -153,7 +153,7 @@ if (!empty($_GET)) {
 
 		// Entrol users to matched COHORTS
 		if (!empty($cohort_idnumbers)) {
-			$ids = explode(',',$cohort_idnumbers);
+			$ids = array_map('trim', explode(',', $cohort_idnumbers));
 			foreach ($ids as $cohort) {
 				if ($DB->record_exists('cohort', array('idnumber'=>$cohort))) {
 					$cohortrow = $DB->get_record('cohort', array('idnumber'=>$cohort));
@@ -174,7 +174,7 @@ if (!empty($_GET)) {
 
 		// Enrol users to matched GROUPS
 		if (!empty($group_idnumbers) && $redirectnoenrol === '0') {
-			$ids = explode(',',$group_idnumbers);
+			$ids = array_map('trim', explode(',', $group_idnumbers));
 			foreach ($ids as $group) {
 				if ($DB->record_exists('groups', array('idnumber'=>$group))) {
 					$grouprow = $DB->get_record('groups', array('idnumber'=>$group));
@@ -191,7 +191,7 @@ if (!empty($_GET)) {
 		// Enrol users to matched COURSES
 		if (!empty($course_idnumbers)) {
 			$studentrow = $DB->get_record('role', array('shortname'=>'student'));
-			$ids = explode(',', $course_idnumbers);
+			$ids = array_map('trim', explode(',', $course_idnumbers));
 			foreach ($ids as $course) {
 				if ($DB->record_exists('course', array('idnumber'=>$course))) {
 					$courserow = $DB->get_record('course', array('idnumber'=>$course));
