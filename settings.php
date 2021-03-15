@@ -31,6 +31,8 @@ if ($ADMIN->fulltree) {
         new lang_string('yes'),
     );
 
+    $wp2m_fields = ['idnumber','email','username'];
+
     $settings->add(new admin_setting_heading('auth_wp2moodle/pluginname',
             '',
             new lang_string('settings_description', 'auth_wp2moodle')));
@@ -52,6 +54,13 @@ if ($ADMIN->fulltree) {
         new lang_string('settings_logoffurl','auth_wp2moodle'),
     	new lang_string('settings_logoffurl_desc', 'auth_wp2moodle'),
     	''
+    ));
+
+    $settings->add(new admin_setting_configselect('auth_wp2moodle/matchfield',
+        new lang_string('settings_matchfield', 'auth_wp2moodle'),
+        new lang_string('settings_matchfield_desc', 'auth_wp2moodle'),
+        'idnumber',
+        $wp2m_fields
     ));
 
     $settings->add(new admin_setting_configselect('auth_wp2moodle/autoopen',

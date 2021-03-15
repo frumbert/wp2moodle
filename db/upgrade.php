@@ -15,18 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * CAS authentication plugin upgrade code
  *
- * @package    auth
+ * @package    auth_cas
  * @subpackage wp2moodle
- * @copyright  2014 Tim St.Clair (tim.stclair@gmail.com)
+ * @copyright  2021 Tim St.Clair (tim.stclair@gmail.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021031500;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2011112900;        // Requires this Moodle version
-$plugin->component = 'auth_wp2moodle';       // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.1';
+/**
+ * Function to upgrade auth_cas.
+ * @param int $oldversion the version we are upgrading from
+ * @return bool result
+ */
+function xmldb_auth_wp2moodle_upgrade($oldversion) {
+    global $CFG;
+
+    if ($oldversion < 2020111500) {
+        set_config('settings_matchfield', 'idnumber', 'auth_wp2moodle');
+        upgrade_plugin_savepoint(true, 2020111500, 'auth', 'wp2moodle');
+    }
+
+    return true;
+}
+
