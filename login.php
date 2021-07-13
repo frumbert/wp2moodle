@@ -150,7 +150,7 @@ if (!empty($_GET)) {
 			$updateuser->mnethostid 	= $CFG->mnet_localhost_id;
 			$updateuser = truncate_user($updateuser);
 			$updateuser->id = $DB->insert_record('user', $updateuser);
-			\core\event\user_created::create_from_userid($user->id)->trigger();
+			\core\event\user_created::create_from_userid($updateuser->id)->trigger();
 			$user = get_complete_user_data('id', $updateuser->id);
 		}
 
