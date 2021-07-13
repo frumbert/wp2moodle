@@ -43,7 +43,10 @@ $SESSION->wantsurl = $CFG->wwwroot.'/';
 
 $PASSTHROUGH_KEY = get_config('auth_wp2moodle', 'sharedsecret');
 if (!isset($PASSTHROUGH_KEY)) {
-	echo "Sorry, this plugin has not yet been configured. Please contact the Moodle administrator for details.";
+	die("Sorry, this plugin has not yet been configured. Please contact the Moodle administrator for details.");
+}
+if (!is_enabled_auth('wp2moodle')) {
+	die('Sorry this plugin is not enabled. Please contact the Moodle administrator for details.');
 }
 
 $rawdata = $_GET['data'];
