@@ -213,6 +213,8 @@ if (!empty($_GET)) {
 			if ($courseId > 0) {
 				$SESSION->wantsurl = new moodle_url('/course/view.php', array('id'=>$courseId));
 			}
+			// course might still be zero, can we calculate it?
+			if ($courseId === 0 && $cmid > 0) $courseId = $DB->get_field('course_modules','course', array('id' => $cmid));
 			// if an activity is specified, or a cmid has been specified, then work out its url.
 			if ($activity > 0 || $cmid > 0) {
 				$course = get_course($courseId);
