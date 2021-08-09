@@ -59,9 +59,16 @@ if (!empty($_GET)) {
 
 	// time (in minutes) before incoming link is considered invalid
 	$timeout 			= (integer) get_config('auth_wp2moodle', 'timeout');
-	$matchfield 		= get_config('auth_wp2moodle', 'matchfield') ?: "idnumber";
-	$matchvalue 		= "";
+	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
+	$matchvalue 			= "";
 	$courseId 			= 0;
+
+	// determine field name to match on
+	switch ($mf) {
+		case 1: $matchfield = "email"; break;
+		case 2: $matchfield = "username"; break;
+		default: $matchfield = "idnumber";
+	}
 
 	// default field values for fields required by moodle
 	$default_firstname 	= get_config('auth_wp2moodle', 'firstname') ?: "no-firstname";
