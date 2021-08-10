@@ -59,11 +59,12 @@ if (!empty($_GET)) {
 
 	// time (in minutes) before incoming link is considered invalid
 	$timeout 			= (integer) get_config('auth_wp2moodle', 'timeout');
-	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
-	$matchvalue 			= "";
-	$courseId 			= 0;
 
 	// determine field name to match on
+	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
+	$matchvalue 		= "";
+	$courseId 			= 0;
+
 	switch ($mf) {
 		case 1: $matchfield = "email"; break;
 		case 2: $matchfield = "username"; break;
@@ -220,7 +221,6 @@ if (!empty($_GET)) {
 			if ($courseId > 0) {
 				$SESSION->wantsurl = new moodle_url('/course/view.php', array('id'=>$courseId));
 			}
-
 			// course might still be zero (or false), can we calculate it?
 			if ($courseId == 0 && $cmid > 0) $courseId = $DB->get_field('course_modules','course', array('id' => $cmid));
 
