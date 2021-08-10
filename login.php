@@ -62,7 +62,7 @@ if (!empty($_GET)) {
 
 	// determine field name to match on
 	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
-	$matchvalue 		= "";
+	$matchvalue 			= "";
 	$courseId 			= 0;
 
 	switch ($mf) {
