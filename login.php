@@ -59,11 +59,10 @@ if (!empty($_GET)) {
 
 	// time (in minutes) before incoming link is considered invalid
 	$timeout 			= (integer) get_config('auth_wp2moodle', 'timeout');
-	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
+	$mf 					= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
 	$matchvalue 			= "";
 	$courseId 			= 0;
 
-	// determine field name to match on
 	switch ($mf) {
 		case 1: $matchfield = "email"; break;
 		case 2: $matchfield = "username"; break;
@@ -174,9 +173,7 @@ if (!empty($_GET)) {
 
 					// if the plugin auto-opens the course, then find the course this cohort enrols for and set it as the opener link
 					if (get_config('auth_wp2moodle', 'autoopen') === '1')  {
-						if ($enrolrow = $DB->get_record('enrol', array('enrol'=>'cohort','customint1'=>$cohortrow->id,'status'=>0))) {
-							$courseId = $enrolrow->courseid;
-						}
+						$courseId = $DB->get_field('enrol','courseid',['enrol'=>'cohort','customint1'=>$cohortrow->id,'status'=>0], IGNORE_MULTIPLE);
 					}
 				}
 			}
@@ -215,15 +212,18 @@ if (!empty($_GET)) {
 			}
 		}
 
+		$courseId = intval($courseId);
+
 		// Work out STARTING URL
 		if (get_config('auth_wp2moodle', 'autoopen') === '1')  {
 			if ($courseId > 0) {
 				$SESSION->wantsurl = new moodle_url('/course/view.php', array('id'=>$courseId));
 			}
 			// course might still be zero, can we calculate it?
-			if ($courseId === 0 && $cmid > 0) $courseId = $DB->get_field('course_modules','course', array('id' => $cmid));
+			if ($courseId == 0 && $cmid > 0) $courseId = $DB->get_field('course_modules','course', array('id' => $cmid));
+
 			// if an activity is specified, or a cmid has been specified, then work out its url.
-			if ($activity > 0 || $cmid > 0) {
+			if ($courseId != 0 && ($activity > 0 || $cmid > 0)) {
 				$course = get_course($courseId);
 				$modinfo = get_fast_modinfo($course);
 				$index = 0;
