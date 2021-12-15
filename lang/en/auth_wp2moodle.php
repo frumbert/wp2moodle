@@ -35,6 +35,9 @@ $string['settings_timeout_desc'] = 'Minutes before incoming link is considered i
 $string['settings_logoffurl'] = 'Logoff Url';
 $string['settings_logoffurl_desc'] = 'Url to redirect to if the user presses Logoff (optional)';
 
+$string['settings_invalidloginurl'] = 'Invalid Login Url';
+$string['settings_invalidloginurl_desc'] = 'Url to redirect to if the user is suspended or deleted';
+
 $string['settings_autoopen'] = 'Auto open course';
 $string['settings_autoopen_desc'] = 'Automatically open the course after successful authentication';
 

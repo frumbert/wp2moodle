@@ -18,7 +18,7 @@ Data is encrypted (using aes-256-cbc via openssl) at the Wordpress end and hande
 How it works
 ------------
 
-This plugin allows you to place a shortcode in a post that passes encrypted logon information to Moodle (requires this plugin to be also installed into Moodle). The user will be added to Moodle and optionally enrolled in the specified Cohort(s), Course(s) and/or Group(s).
+This plugin allows you to place a shortcode in a post that passes encrypted logon information to Moodle (requires this plugin to be also installed into Moodle). The user will be added to Moodle and optionally enrolled in the specified Cohort(s), Course(s) and/or Group(s). If a user is deleted or suspended in Moodle, they will redirect to an url (either the Moodle login page, or a URL you specify).
 
 Use the Moodle button on the rich editor to insert the shortcode, or enter the details manually using the examples below as a guide.
 
@@ -37,6 +37,7 @@ Example: `[wp2moodle class='css-classname' group='group1' cohort='class1' target
 | `cmid` |optional | Activity ID to open (e.g. /mod/plugin/view.php?id=XXX) | `[wp2moodle course='abc1' cmid='4683']Open course blog[/wp2moodle]` |
 | `url` | optional | Url to open after logon (overrides everything else) | `/mod/customplugin/index.php?id=123` |
 
+*Note* **csv** means comma separated values, no extra spaces
 
 Requirements
 ------------
@@ -58,7 +59,6 @@ Usage:
 You can not use this plugin directly; it is launched by wp2moodle from within Wordpress.
 
 *IMPORTANT*: when linking to things by their `id` make sure you use the moodle field `id number`. This is often blank by default - you need to set it.
-
 
 
 Problems?

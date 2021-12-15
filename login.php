@@ -79,6 +79,10 @@ if (!empty($_GET)) {
 	$idnumber_prefix 	= get_config('auth_wp2moodle', 'idprefix') ?: "wp2m";
 	$redirectnoenrol	= get_config('auth_wp2moodle', 'redirectnoenrol');
 
+	$invalidloginurl	= get_config('auth_wp2moodle', 'invalidloginurl');
+	if (empty($invalidloginurl)) $invalidloginurl = '/login/index.php';
+	$invalidloginurl = new moodle_url($invalidloginurl);
+
 	// if userdata didn't decrypt, then timestamp will = 0, so following code will be bypassed anyway (e.g. bad data)
 	$timestamp 			= (integer) get_key_value($userdata, "stamp"); // remote site should have set this to new DateTime("now").getTimestamp(); which is a unix timestamp (utc)
 	$theirs				= new DateTime("@$timestamp"); // @ format here: http://www.gnu.org/software/tar/manual/html_node/Seconds-since-the-Epoch.html#SEC127
@@ -117,6 +121,11 @@ if (!empty($_GET)) {
 		// find the user record (if it exists) and update if required
 		if ($DB->record_exists('user', [$matchfield => $matchvalue])) {
 			$updateuser = get_complete_user_data($matchfield, $matchvalue);
+			if ($updateuser->suspended == 1 || $updateuser->deleted == 1) {
+                $SESSION->loginerrormsg = get_string('invalidlogin');
+				redirect($invalidloginurl);
+			}
+
 			if ($updatefields) {
 				check_user_email($email);
 				$updateuser->username 		= $username;

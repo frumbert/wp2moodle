@@ -56,6 +56,12 @@ if ($ADMIN->fulltree) {
     	''
     ));
 
+    $settings->add(new admin_setting_configtext('auth_wp2moodle/invalidloginurl',
+        new lang_string('settings_invalidloginurl','auth_wp2moodle'),
+        new lang_string('settings_invalidloginurl_desc', 'auth_wp2moodle'),
+        ''
+    ));
+
     $settings->add(new admin_setting_configselect('auth_wp2moodle/matchfield',
         new lang_string('settings_matchfield', 'auth_wp2moodle'),
         new lang_string('settings_matchfield_desc', 'auth_wp2moodle'),
