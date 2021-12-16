@@ -62,7 +62,7 @@ if (!empty($_GET)) {
 
 	// determine field name to match on
 	$mf 				= intval(get_config('auth_wp2moodle', 'matchfield') ?: 0);
-	$matchvalue 			= "";
+	$matchvalue 		= "";
 	$courseId 			= 0;
 
 	switch ($mf) {
@@ -109,15 +109,27 @@ if (!empty($_GET)) {
 
 		// $updatefields = (get_key_value($userdata, "updatable") != "false"); // if true or not set, update fields like email, username, etc.
 		$updatefields 		= (get_config('auth_wp2moodle', 'updateuser') === '1');
+		$usernameemail		= (get_config('auth_wp2moodle', 'usernameemail') === '1'); //
 		$wantsurl 			= get_key_value($userdata, "url");
 
 		// set DB record lookup match value; default = idnumber
 		switch ($matchfield) {
 			case "username": $matchvalue = $username; break;
-			case "email":    $matchvalue = $email;    break;
-			default:		 $matchvalue = $idnumber; $matchfield = "idnumber";
+			case "email": $matchvalue = $email; break;
+			default: $matchvalue = $idnumber; $matchfield = "idnumber";
 		}
 
+		// if idnumber matches a user but the matchfield no longer does, assume that field was updated and switch mathing methods so the record updates
+	    $sql = "SELECT id
+              FROM {user}
+			  WHERE idnumber = ?
+			  AND {$matchfield} <> ?
+		";
+		$rs = $DB->get_record_sql($sql, array($idnumber, $matchvalue));
+		if ($rs) {
+			$matchfield = "idnumber"; $matchvalue = $idnumber;
+		}
+ 
 		// find the user record (if it exists) and update if required
 		if ($DB->record_exists('user', [$matchfield => $matchvalue])) {
 			$updateuser = get_complete_user_data($matchfield, $matchvalue);
@@ -128,7 +140,7 @@ if (!empty($_GET)) {
 
 			if ($updatefields) {
 				check_user_email($email);
-				$updateuser->username 		= $username;
+				$updateuser->username 		= ($usernameemail) ? $email : $username;
 				$updateuser->email 			= $email;
 				$updateuser->idnumber 		= $idnumber;
 				$updateuser->firstname 		= $firstname;
@@ -154,7 +166,7 @@ if (!empty($_GET)) {
 			$updateuser->auth 			= $auth;
 			$updateuser->policyagreed 	= 1;
 			$updateuser->idnumber 		= $idnumber;
-			$updateuser->username 		= $username;
+			$updateuser->username 		= ($usernameemail) ? $email : $username;
 			$updateuser->password 		= md5($hashedpassword); // manual auth checks password validity, so we need to set a valid password
 			$updateuser->firstname 		= $firstname;
 			$updateuser->lastname 		= $lastname;

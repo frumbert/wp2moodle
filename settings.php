@@ -83,6 +83,13 @@ if ($ADMIN->fulltree) {
         $wp2myesno
     ));
 
+    $settings->add(new admin_setting_configselect('auth_wp2moodle/usernameemail',
+        new lang_string('settings_usernameemail', 'auth_wp2moodle'),
+        new lang_string('settings_usernameemail_desc', 'auth_wp2moodle'),
+        0,
+        $wp2myesno
+    ));
+
     $settings->add(new admin_setting_configselect('auth_wp2moodle/redirectnoenrol',
         new lang_string('settings_redirectnoenrol', 'auth_wp2moodle'),
         new lang_string('settings_redirectnoenrol_desc', 'auth_wp2moodle'),

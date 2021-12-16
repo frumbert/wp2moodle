@@ -54,10 +54,13 @@ $string['settings_lastname'] = 'Last name (if empty)';
 $string['settings_lastname_desc'] = 'If no last name is specified by Wordpress, use this value';
 
 $string['settings_matchfield'] = 'Field used to match';
-$string['settings_matchfield_desc'] = 'When creating or matching users, use this database field to match records (default: idnumber)';
+$string['settings_matchfield_desc'] = 'When creating or matching users, use this database field to match records (default: idnumber).';
 
 $string['settings_idprefix'] = 'Prefix for user idnumber';
 $string['settings_idprefix_desc'] = 'Optional string value to store in front of of the idnumber to avoid clashes (default: wp2m).';
 
 $string['notloggedindebug'] = 'The login attempt failed. Reason: {$a}';
 $string['loginerror_invaliddomain'] = 'The email address is not allowed at this site.';
+
+$string['settings_usernameemail'] = 'Set username to email';
+$string['settings_usernameemail_desc'] = 'Prefer email to username in username field when creating or updating records.';

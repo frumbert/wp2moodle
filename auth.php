@@ -163,12 +163,16 @@ class auth_plugin_wp2moodle extends auth_plugin_base {
         if (!isset($config->idprefix)) {
             $config->idprefix = '';
         }
+        if (!isset($config->updateuser)) {
+            $config->updateuser = 'no';
+        }
 
         // save settings
         set_config('sharedsecret', $config->sharedsecret, 'auth_wp2moodle');
         set_config('logoffurl', $config->logoffurl, 'auth_wp2moodle');
         set_config('timeout', $config->timeout, 'auth_wp2moodle');
         set_config('autoopen', $config->autoopen, 'auth_wp2moodle');
+        set_config('updateuser', $config->updateuser, 'auth_wp2moodle');
         set_config('updateuser', $config->updateuser, 'auth_wp2moodle');
         set_config('redirectnoenrol', $config->redirectnoenrol, 'auth_wp2moodle');
         set_config('idprefix', $config->idprefix, 'auth_wp2moodle');
